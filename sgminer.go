@@ -80,6 +80,7 @@ type Devs struct {
 }
 
 type Pool struct {
+	Name                   string
 	Accepted               int64
 	BestShare              float64 `json:"Best Share"`
 	Diff1Shares            float64 `json:"Diff1 Shares"`
