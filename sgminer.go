@@ -178,6 +178,10 @@ func (miner *SGMiner) runCommand(command, argument string) (string, error) {
 	return strings.TrimRight(result, "\x00"), nil
 }
 
+func (miner *SGMiner) Run(command, argument string) (string, error) {
+	return miner.runCommand(command, argument)
+}
+
 // Devs returns basic information on the miner. See the Devs struct.
 func (miner *SGMiner) Devs() (*[]Devs, error) {
 	result, err := miner.runCommand("devs", "")
