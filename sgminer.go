@@ -1,4 +1,4 @@
-package cgminer
+package sgminer
 
 import (
 	"bufio"
@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-type CGMiner struct {
+type SGMiner struct {
 	server string
 }
 
@@ -135,17 +135,17 @@ type addPoolResponse struct {
 	Id     int64    `json:"id"`
 }
 
-// New returns a CGMiner pointer, which is used to communicate with a running
-// CGMiner instance. Note that New does not attempt to connect to the miner.
-func New(hostname string, port int64) *CGMiner {
-	miner := new(CGMiner)
+// New returns a SGMiner pointer, which is used to communicate with a running
+// SGMiner instance. Note that New does not attempt to connect to the miner.
+func New(hostname string, port int64) *SGMiner {
+	miner := new(SGMiner)
 	server := fmt.Sprintf("%s:%d", hostname, port)
 	miner.server = server
 
 	return miner
 }
 
-func (miner *CGMiner) runCommand(command, argument string) (string, error) {
+func (miner *SGMiner) runCommand(command, argument string) (string, error) {
 	conn, err := net.Dial("tcp", miner.server)
 	if err != nil {
 		return "", err
@@ -179,7 +179,7 @@ func (miner *CGMiner) runCommand(command, argument string) (string, error) {
 }
 
 // Devs returns basic information on the miner. See the Devs struct.
-func (miner *CGMiner) Devs() (*[]Devs, error) {
+func (miner *SGMiner) Devs() (*[]Devs, error) {
 	result, err := miner.runCommand("devs", "")
 	if err != nil {
 		return nil, err
@@ -196,7 +196,7 @@ func (miner *CGMiner) Devs() (*[]Devs, error) {
 }
 
 // Summary returns basic information on the miner. See the Summary struct.
-func (miner *CGMiner) Summary() (*Summary, error) {
+func (miner *SGMiner) Summary() (*Summary, error) {
 	result, err := miner.runCommand("summary", "")
 	if err != nil {
 		return nil, err
@@ -217,7 +217,7 @@ func (miner *CGMiner) Summary() (*Summary, error) {
 }
 
 // Pools returns a slice of Pool structs, one per pool.
-func (miner *CGMiner) Pools() ([]Pool, error) {
+func (miner *SGMiner) Pools() ([]Pool, error) {
 	result, err := miner.runCommand("pools", "")
 	if err != nil {
 		return nil, err
@@ -235,7 +235,7 @@ func (miner *CGMiner) Pools() ([]Pool, error) {
 
 // AddPool adds the given URL/username/password combination to the miner's
 // pool list.
-func (miner *CGMiner) AddPool(url, username, password string) error {
+func (miner *SGMiner) AddPool(url, username, password string) error {
 	// TODO: Don't allow adding a pool that's already in the pool list
 	// TODO: Escape commas in the URL, username, and password
 	parameter := fmt.Sprintf("%s,%s,%s", url, username, password)
@@ -260,36 +260,36 @@ func (miner *CGMiner) AddPool(url, username, password string) error {
 	return nil
 }
 
-func (miner *CGMiner) Enable(pool *Pool) error {
+func (miner *SGMiner) Enable(pool *Pool) error {
 	parameter := fmt.Sprintf("%d", pool.Pool)
 	_, err := miner.runCommand("enablepool", parameter)
 	return err
 }
 
-func (miner *CGMiner) Disable(pool *Pool) error {
+func (miner *SGMiner) Disable(pool *Pool) error {
 	parameter := fmt.Sprintf("%d", pool.Pool)
 	_, err := miner.runCommand("disablepool", parameter)
 	return err
 }
 
-func (miner *CGMiner) Delete(pool *Pool) error {
+func (miner *SGMiner) Delete(pool *Pool) error {
 	parameter := fmt.Sprintf("%d", pool.Pool)
 	_, err := miner.runCommand("removepool", parameter)
 	return err
 }
 
-func (miner *CGMiner) SwitchPool(pool *Pool) error {
+func (miner *SGMiner) SwitchPool(pool *Pool) error {
 	parameter := fmt.Sprintf("%d", pool.Pool)
 	_, err := miner.runCommand("switchpool", parameter)
 	return err
 }
 
-func (miner *CGMiner) Restart() error {
+func (miner *SGMiner) Restart() error {
 	_, err := miner.runCommand("restart", "")
 	return err
 }
 
-func (miner *CGMiner) Quit() error {
+func (miner *SGMiner) Quit() error {
 	_, err := miner.runCommand("quit", "")
 	return err
 }
