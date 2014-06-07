@@ -80,7 +80,7 @@ type Devs struct {
 }
 
 type Pool struct {
-	Name                   string
+	Algorithm              string
 	Accepted               int64
 	BestShare              float64 `json:"Best Share"`
 	Diff1Shares            float64 `json:"Diff1 Shares"`
@@ -95,6 +95,7 @@ type Pool struct {
 	LastShareDifficulty    float64 `json:"Last Share Difficulty"`
 	LastShareTime          int64   `json:"Last Share Time"`
 	LongPoll               string  `json:"Long Poll"`
+	Name                   string
 	Pool                   int64   `json:"POOL"`
 	PoolRejectedPercentage float64 `json:"Pool Rejected%"`
 	PoolStalePercentage    float64 `json:"Pool Stale%"`
