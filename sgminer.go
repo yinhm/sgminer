@@ -148,7 +148,7 @@ func New(hostname string, port int64) *SGMiner {
 }
 
 func (miner *SGMiner) runCommand(command, argument string) (string, error) {
-	conn, err := net.Dial("tcp", miner.server)
+	conn, err := net.DialTimeout("tcp", miner.server, 5 * time.Second)
 	if err != nil {
 		return "", err
 	}
